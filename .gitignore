@@ -88,8 +88,9 @@ local_settings.py
 
 .env
 dev.env
-###db.sqlite3
 
 NOTEs.rst
 
 local/
+
+.mypy_cache/3.12

@@ -78,6 +78,10 @@ To run the Django development server:
 2. **Run the development server**:
     ```bash
     python manage.py runserver
+    or
+    poetry run python manage.py runserver
+    from the src folder or
+    poetry run python .src/manage.py runserver
     ```
 
 This will start the server locally, and you can visit `http://127.0.0.1:8000` to access the application.
