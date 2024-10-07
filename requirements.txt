@@ -27,6 +27,7 @@ more-itertools==10.5.0
 msgpack==1.1.0
 packaging==24.1
 pexpect==4.9.0
+pillow==10.4.0
 pkginfo==1.11.1
 platformdirs==4.3.6
 pluggy==1.5.0
@@ -49,6 +50,7 @@ requests==2.32.3
 requests-toolbelt==1.0.0
 setuptools==75.1.0
 shellingham==1.5.4
+six==1.16.0
 sqlparse==0.5.1
 tomlkit==0.13.2
 trove-classifiers==2024.9.12
