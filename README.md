@@ -13,7 +13,7 @@ Ensure you have the following installed:
 ## Setup Instructions
 
 Follow these steps to set up the project locally for development:
-
+Please note that installing poetry and running without python venv is completely fine. which insall poetry on global environment, then peotry install for dependencies (pyrpoject.toml) and straight away running the server following migrations.
 1. **Clone the repository**:
     ```bash
     git clone https://github.com/SumanSunuwar/read-list-manager.git
