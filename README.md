@@ -76,7 +76,7 @@ To run the Django development server:
       ```
     - install packages
       ```bash
-    - poetry install
+      poetry install
     ```
 
 2. **Run the development server**:
