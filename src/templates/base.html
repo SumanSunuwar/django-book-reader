@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+
+    <title>{% block title %} Book Discovery App - Find Your Next Read {% endblock %}</title>
+    <meta name="description" content="A web application for discovering books and managing personal reading lists. Search for books, authors, and genres effortlessly.">
+    <meta name="keywords" content="Django, book discovery, reading list, search books, manage reading lists, author search, genre browsing, web application">
+    
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:200,400&display=swap" rel="stylesheet">
+    
+    <!-- Link to your custom CSS file -->
+    <link rel="stylesheet" href="{% static 'css/custom.style.css' %}">
+    
+    <style>
+        .work-sans {
+            font-family: 'Work Sans', sans-serif;
+        }
+                
+        #menu-toggle:checked + #menu {
+            display: block;
+        }
+        
+        .hover\:grow {
+            transition: all 0.3s;
+            transform: scale(1);
+        }
+        
+        .hover\:grow:hover {
+            transform: scale(1.02);
+        }
+        
+        .carousel-open:checked + .carousel-item {
+            position: static;
+            opacity: 100;
+        }
+        
+        .carousel-item {
+            -webkit-transition: opacity 0.6s ease-out;
+            transition: opacity 0.6s ease-out;
+        }
+        
+        #carousel-1:checked ~ .control-1,
+        #carousel-2:checked ~ .control-2,
+        #carousel-3:checked ~ .control-3 {
+            display: block;
+        }
+        
+        .carousel-indicators {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            bottom: 2%;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 10;
+        }
+        
+        #carousel-1:checked ~ .control-1 ~ .carousel-indicators li:nth-child(1) .carousel-bullet,
+        #carousel-2:checked ~ .control-2 ~ .carousel-indicators li:nth-child(2) .carousel-bullet,
+        #carousel-3:checked ~ .control-3 ~ .carousel-indicators li:nth-child(3) .carousel-bullet {
+            color: #000;
+            /*Set to match the Tailwind colour you want the active one to be */
+        }
+    </style>
+
+</head>
+<body class="px-10 bg-white text-gray-600 work-sans leading-normal text-base tracking-normal">
+    {% block navbar %} <!-- Include your navbar -->
+    {% include 'components/navbar.html' %}
+    {% endblock %}
+    <div class="w-full">  <!-- Use w-full here to ensure full width -->
+        {% block content %}
+        <!-- Other page-specific content will go here -->
+        {% endblock %}
+    </div>
+    {% block footer %}
+    <!-- Footer content -->
+    {% include 'components/footer.html' %}
+    {% comment %} <script>
+        const my_access_key = 'k1042xukFLLt71w8xHQufsuwtphwrsFFtmlrB6UnL9s';
+        async function fetchRandomBookImages() {
+            // Get the number of book cards rendered on the page
+            const bookCards = document.querySelectorAll('.book-image');
+            const count = bookCards.length; // This gives the number of book images to fetch
+        
+            try {
+                // Fetch multiple random book images
+                const response = await fetch(`https://api.unsplash.com/photos/random?query=book&client_id=${my_access_key}&count=${count}`);
+                
+                // Check if the response is OK
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+        
+                const data = await response.json();
+        
+                // Loop through each book image and update its source
+                bookCards.forEach((img, index) => {
+                    if (data[index]) {
+                        img.src = data[index].urls.regular; // Use a suitable size for your layout
+                        img.alt = data[index].alt_description || 'Random Book'; // Fallback alt text
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching images:', error);
+            }
+        }
+        
+        // Call the function to fetch and display random book images
+        fetchRandomBookImages();
+    </script> {% endcomment %}
+    <script>
+        // Function to toggle the search bar visibility and hide other elements
+        function toggleSearch() {
+            const authorSection = document.getElementById('author-section');
+            const searchBar = document.getElementById('search_bar');
+            const bookList = document.querySelector('.mx-auto.flex.items-center.flex-wrap.pt-4.pb-12');
+    
+            // Check if the search bar is currently hidden
+            const isSearchBarHidden = searchBar.classList.contains('hidden');
+    
+            // Toggle visibility of the search bar
+            if (isSearchBarHidden) {
+                searchBar.classList.remove('hidden'); // Show the search bar
+                if (authorSection) {
+                    authorSection.classList.add('hidden'); // Hide the author section
+                }
+                bookList.scrollIntoView({ behavior: 'smooth' }); // Scroll to the book list when search bar is revealed
+            } else {
+                // If the search bar is already visible, keep it visible and just hide the author section
+                if (authorSection) {
+                    authorSection.classList.add('hidden'); // Always hide the author section
+                }
+                // No need to hide the book list; ensure it remains visible
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>    
+<!--Script for calling ajax to make add to reading request-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    
+    $(document).ready(function() {
+        $('.add-to-reading-list').click(function(e) {
+            e.preventDefault();
+            var bookId = $(this).data('book-id');
+    
+            $.ajax({
+                type: 'POST',
+                url: '{% url "reader:add_to_reading_list" %}',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    book_uid: bookId, // Use the retrieved book ID correctly
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        // Handle success case
+                        showOverlayMessage('Book added to your reading list.', 'success'); // Call your existing success function
+                    } else {
+                        // Handle error case
+                        showOverlayMessage(response.message, 'error'); // Pass the message and a new error type
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error adding the book:", error);
+                }
+            });
+        });
+    });
+
+    
+</script>
+
+    {% endblock %}
+    
+</body>
+</html>

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block navbar %} 
+<!-- Include your navbar -->
+{% endblock %}
+
+{% block content %}
+{% include 'components/message.html' %}
+
+<div class="bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        {% include 'auth/form_logo.html' %}     
+        <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
+            Create a new account
+        </h2>
+        <p class="mt-2 text-center text-sm leading-5 text-gray-500 max-w">
+            Or
+            <a href="{% url 'reader:login' %}"
+                class="font-medium text-blue-600 hover:text-blue-500 focus:outline-none focus:underline transition ease-in-out duration-150">
+                login to your account
+            </a>
+        </p>
+    </div>
+
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+
+            <!-- Non-field errors (e.g., password mismatch) -->
+            {% if form.non_field_errors %}
+                <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role="alert">
+                    {% for error in form.non_field_errors %}
+                    <p{% if forloop.last %} class="mb-0"{% endif %}>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Django messages -->
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <form method="POST" action="{% url 'reader:register' %}">
+                {% csrf_token %}
+                
+                <!-- Username Field -->
+                <div class="mt-6">
+                    <label for="username" class="block text-sm font-medium leading-5 text-gray-700">Username</label>
+                    <div class="mt-1">
+                        {{ form.username }}
+                        <!-- Field-specific errors -->
+                        {% if form.username.errors %}
+                            <p class="text-red-500 text-xs italic">{{ form.username.errors|join:", " }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Email Field -->
+                <div class="mt-6">
+                    <label for="email" class="block text-sm font-medium leading-5 text-gray-700">Email address</label>
+                    <div class="mt-1">
+                        {{ form.email }}
+                        <!-- Field-specific errors -->
+                        {% if form.email.errors %}
+                            <p class="text-red-500 text-xs italic">{{ form.email.errors|join:", " }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="mt-6">
+                    <label for="password" class="block text-sm font-medium leading-5 text-gray-700">Password</label>
+                    <div class="mt-1">
+                        {{ form.password1 }}
+                        <!-- Field-specific errors -->
+                        {% if form.password1.errors %}
+                            <p class="text-red-500 text-xs italic">{{ form.password1.errors|join:", " }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div class="mt-6">
+                    <label for="password_confirmation" class="block text-sm font-medium leading-5 text-gray-700">
+                        Confirm Password
+                    </label>
+                    <div class="mt-1">
+                        {{ form.password2 }}
+                        <!-- Field-specific errors -->
+                        {% if form.password2.errors %}
+                            <p class="text-red-500 text-xs italic">{{ form.password2.errors|join:", " }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="mt-6">
+                    <span class="block w-full rounded-md shadow-sm">
+                        <button type="submit"
+                            class="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-blue-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                            Create account
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<!-- Include your footer -->
+{% endblock %}

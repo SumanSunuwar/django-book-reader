@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="bg-white py-8">
+
+    {% if author %}
+    {% include 'components/author_profile.html' %}
+    {% endif %}
+
+    <!-- Navigation bar with the search component -->
+    <nav id="search_bar" class="hidden w-full z-30 top-0 px-6 py-1">
+        <div class="mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
+            {% include 'components/search.html' %}
+        </div>
+    </nav>
+
+    <div class="mx-auto flex items-center flex-wrap pt-4 pb-12">
+        {% for book in books %}
+            {% include 'components/book_card.html' %}
+        {% endfor %}
+    </div>
+</section>
+
+<script>
+    // Function to toggle the search bar visibility and hide other elements
+    function toggleSearch() {
+        const authorSection = document.getElementById('author-section');
+        const searchBar = document.getElementById('search_bar');
+        const bookList = document.querySelector('.mx-auto.flex.items-center.flex-wrap.pt-4.pb-12');
+
+        // Check if the search bar is currently hidden
+        const isSearchBarHidden = searchBar.classList.contains('hidden');
+
+        // Toggle visibility of the search bar
+        if (isSearchBarHidden) {
+            searchBar.classList.remove('hidden'); // Show the search bar
+            if (authorSection) {
+                authorSection.classList.add('hidden'); // Hide the author section
+            }
+            bookList.scrollIntoView({ behavior: 'smooth' }); // Scroll to the book list when search bar is revealed
+        } else {
+            // If the search bar is already visible, keep it visible and just hide the author section
+            if (authorSection) {
+                authorSection.classList.add('hidden'); // Always hide the author section
+            }
+            // No need to hide the book list; ensure it remains visible
+        }
+    }
+</script>
+
+
+{% endblock %}

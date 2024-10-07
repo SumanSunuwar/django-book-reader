@@ -1,0 +1,5 @@
+.book-image {
+    width: 100%;         /* Full width */
+    height: 250px;      /* Set a fixed height */
+    object-fit: cover;  /* Crop to fill the element */
+}

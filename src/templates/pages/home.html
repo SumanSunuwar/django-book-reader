@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block content %}
+
+<div class="mx-auto mt-8">    
+   
+    {% include 'components/message.html' %}
+    <!-- Carousel Wrapper -->
+    <div class="relative w-full max-w-full mx-auto carousel">
+        <div class="object-cover carousel-inner relative overflow-hidden w-full h-64 md:h-96">
+            
+            <!-- Slide 1 -->
+            <input class="carousel-open" type="radio" id="carousel-1" name="carousel" aria-hidden="true" hidden checked>
+            <div class="carousel-item absolute opacity-0 transition-opacity duration-700 ease-in-out h-full w-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1422190441165-ec2956dc9ecc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80'); min-height: 400px;">
+                <div class="h-full w-full flex items-center justify-center bg-black bg-opacity-50">
+                    <div class="text-center text-white">
+                        <p class="text-2xl mb-4">Cultivate a Reading Habit with Our Extensive Collection!</p>
+                        <a href="{% url 'home:book_list' %}" class="inline-block text-lg border-b-2 border-white hover:border-transparent hover:text-gray-300">Browse Books</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 2 -->
+            <input class="carousel-open" type="radio" id="carousel-2" name="carousel" aria-hidden="true" hidden>
+            <div class="carousel-item absolute opacity-0 transition-opacity duration-700 ease-in-out h-full w-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1533090161767-e6ffed986c88?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjM0MTM2fQ&auto=format&fit=crop&w=1600&q=80'); min-height: 400px;">
+                <div class="h-full w-full flex items-center justify-center bg-black bg-opacity-50">
+                    <div class="text-center text-white">
+                        <p class="text-2xl mb-4">Track Your Reading List and Move Forward!</p>
+                        <a href="#" class="inline-block text-lg border-b-2 border-white hover:border-transparent hover:text-gray-300">View Product</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <input class="carousel-open" type="radio" id="carousel-3" name="carousel" aria-hidden="true" hidden>
+            <div class="carousel-item absolute opacity-0 transition-opacity duration-700 ease-in-out h-full w-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1519327232521-1ea2c736d34d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80'); min-height: 400px;">
+                <div class="h-full w-full flex items-center justify-center bg-black bg-opacity-50">
+                    <div class="text-center text-white">
+                        <p class="text-2xl mb-4">Embrace Life Through Effective Reading Management!</p>
+                        <a href="#" class="inline-block text-lg border-b-2 border-white hover:border-transparent hover:text-gray-300">View Product</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Previous/Next Controls -->
+            <label for="carousel-3" class="prev control absolute left-0 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white text-black rounded-full cursor-pointer text-center leading-10 transition hover:bg-gray-700 hover:text-white" aria-label="Previous Slide">‹</label>
+            <label for="carousel-2" class="next control absolute right-0 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white text-black rounded-full cursor-pointer text-center leading-10 transition hover:bg-gray-700 hover:text-white" aria-label="Next Slide">›</label>
+
+            <!-- Carousel Indicators -->
+            <ol class="carousel-indicators flex justify-center space-x-3 mt-4">
+                <li>
+                    <label for="carousel-1" class="carousel-bullet cursor-pointer block text-4xl text-gray-400 hover:text-gray-900">•</label>
+                </li>
+                <li>
+                    <label for="carousel-2" class="carousel-bullet cursor-pointer block text-4xl text-gray-400 hover:text-gray-900">•</label>
+                </li>
+                <li>
+                    <label for="carousel-3" class="carousel-bullet cursor-pointer block text-4xl text-gray-400 hover:text-gray-900">•</label>
+                </li>
+            </ol>
+        </div>
+    </div>
+        <!-- Navigation bar with the search component -->
+        <nav id="search_bar" class="hidden w-full z-30 top-0 px-6 py-1">
+            <div class="mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
+                {% include 'components/search.html' %}
+            </div>
+        </nav>
+    <!-- Genre Cards Section -->
+    <section class="bg-white py-8">
+        <h2 class="p-8 text-3xl font-bold text-center mb-4">Browse by Genre</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-4">
+            {% for genre in genres %}
+                <div class="genre-card bg-gray-200 rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+                    <a href="{% url 'home:book_by_genre' genre.uid %}">
+                        <div class="relative h-64">
+                            <img src="{% if genre.genre_image %}{{ genre.genre_image.url }}{% else %}{% static 'images/default-genre-image.jpg' %} {% endif %}" alt="{{ genre.name }}" class="w-full h-full object-cover rounded-t-lg transition-transform duration-300 ease-in-out transform hover:scale-110">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-xl font-semibold text-center">{{ genre.name }}</h3>
+                        </div>
+                    </a>
+                </div>
+            {% empty %}
+                <p class="text-center">No genres available at the moment.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="bg-white py-8">
+        {% include 'components/about.html' %}
+    </section>
+</div>
+
+{% endblock %}

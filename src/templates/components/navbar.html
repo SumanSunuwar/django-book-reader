@@ -1,0 +1,77 @@
+<!--Nav-->
+<nav id="header" class="w-full z-30 top-0 py-1">
+    <div class="mx-auto flex flex-wrap items-center justify-between mt-0 px-6 py-3">
+        <label for="menu-toggle" class="cursor-pointer md:hidden block">
+            <svg class="fill-current text-gray-900" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                <title>menu</title>
+                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+            </svg>
+        </label>
+        <input class="hidden" type="checkbox" id="menu-toggle" />
+
+        <div class="hidden md:flex md:items-center md:w-auto w-full order-3 md:order-1" id="menu">
+            <nav>
+                <ul class="md:flex items-center justify-between text-base text-gray-700 pt-4 md:pt-0">
+                    <li><a class="inline-block no-underline hover:text-black hover:underline py-2 px-4" href={% url 'home:book_list' %}>Books</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a class="inline-block no-underline hover:text-black hover:underline py-2 px-4" href="{% url 'reader:reading_list' %}">My Readings</a></li>
+                    {% endif %}
+                    <li>
+                        <a id="mega-menu-dropdown-button" data-dropdown-toggle="mega-menu-dropdown" class="flex items-center justify-between w-full py-2 px-3 font-medium inline-block no-underline hover:text-black hover:underline py-2 px-4">
+                            Browse 
+                            <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                            </svg>
+                        </a>
+                        <div id="mega-menu-dropdown" class="absolute z-10 grid hidden w-auto grid-cols-2 text-sm bg-white border border-gray-100 rounded-lg shadow-md dark:border-gray-700 md:grid-cols-3 dark:bg-gray-700">
+                            <div class="p-4 pb-0 text-gray-900 md:pb-4 dark:text-white">
+                                <ul class="space-y-4" aria-labelledby="mega-menu-dropdown-button">
+                                    <li>
+                                        <a href="{% url 'home:genre_list' %}" class="inline-block no-underline hover:text-black hover:underline py-2 px-4">
+                                            Genre
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'home:author_list' %}" class="inline-block no-underline hover:text-black hover:underline py-2 px-4">
+                                            Author
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="inline-block no-underline hover:text-black hover:underline py-2 px-4">
+                                            Popularity
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    
+                   
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Include the brand logo here -->
+        <div class="order-1 md:order-2">  
+            {% include 'components/_brand_logo.html' %}
+        </div>
+
+        <div class="order-2 md:order-3 flex items-center" id="nav-content">
+             <!-- Replace the existing icon with the new search icon -->
+             <button id="toggle-search" class="items-center hover:text-black" onclick="toggleSearch()">
+                <span class="pl-4 pt-3 inline-block no-underline hover:text-black">
+                    <svg class="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M10,18c1.846,0,3.543-0.635,4.897-1.688l4.396,4.396l1.414-1.414l-4.396-4.396C17.365,13.543,18,11.846,18,10 c0-4.411-3.589-8-8-8s-8,3.589-8,8S5.589,18,10,18z M10,4c3.309,0,6,2.691,6,6s-2.691,6-6,6s-6-2.691-6-6S6.691,4,10,4z" />
+                    </svg>
+                </span>
+            </button>
+            {% if user.is_authenticated %}
+                <h1>Hi, {{ user.username }} <a href="{% url 'reader:logout' %}">Logout</a> </h1>
+                <!-- Display user-specific content for logged-in users -->
+            {% else %}
+            <h5> <a class="pl-4 hover:underline" href="{% url 'reader:login' %}">Login</a> </h5>
+            <h5> <a class="pl-4 hover:underline" href="{% url 'reader:register' %}">Sign Up</a> </h5>
+            {% endif %}
+        </div>
+    </div>
+</nav>

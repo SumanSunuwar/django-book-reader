@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mb-16">
+    <dh-component>
+        <header class="bg-gray-800 p-4 text-white">
+            <div class="container mx-auto">
+                <h1 class="text-2xl font-bold">Book List</h1>
+            </div>
+        </header>
+        <div class="container flex justify-between mx-auto pt-16">
+            <main class="w-full lg:w-3/4">
+
+                <!-- Check if there are books -->
+                {% if books %}
+                <!-- Book Cards -->
+                <div role="list" aria-label="Books" class="pr-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for book in books %}
+                    <article role="listitem" class="bg-white shadow-lg rounded-lg overflow-hidden">
+                        <img alt="{{ book.title }} cover" class="w-full h-48 object-cover" src="{{ book.cover_image.url }}">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-900">{{ book.title }}</h3>
+                            <h4 class="text-sm text-gray-600">
+                                AUTHOR:
+                                <a href="{% url 'home:filter_by_author' book.primary_author.uid %}" class="text-gray-700 hover:underline">{{ book.primary_author }}</a>
+                                {% if book.other_authors.exists %}, {% endif %}
+                                {% for author in book.other_authors %}
+                                    <a href="{% url 'home:filter_by_author' author.uid %}" class="text-gray-700 hover:underline">{{ author }}</a>{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </h4>
+                            <div class="flex mt-2">
+                                <span class="flex items-center">
+                                    {% for i in "12345" %}
+                                    <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 {% if i <= book.rating %} text-red-500 {% else %} text-gray-300 {% endif %}" viewBox="0 0 24 24">
+                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                    </svg>
+                                    {% endfor %}
+                                </span>
+                                <span class="ml-2 text-gray-600">{{ book.rating }} ratings</span>
+                            </div>
+                            <p class="leading-relaxed mt-2 text-gray-600">{{ book.summary|truncatewords:20 }}</p>
+                            <div class="mt-4 flex justify-between items-center">
+                                <span class="text-gray-500">
+                                    <strong>Genres:</strong>
+                                    {% for genre in book.genres.all %}
+                                        <a href="{% url 'home:book_by_genre' genre.uid %}" class="text-gray-700 hover:underline">{{ genre.name }}{% if not forloop.last %}, {% endif %}</a>
+                                    {% endfor %}
+                                </span>
+                                <span class="text-gray-500">
+                                    <strong>Publication Date:</strong> {{ book.publication_date|date:"Y-m-d" }}
+                                </span>
+                            </div>
+                            <!-- Add into list Options -->
+                            <div class="flex mt-6">
+                                <button class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ">Add to Read</button>
+                                <button class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
+                                    <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+                                        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <!-- Empty Card when no books are available -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden text-center flex flex-col items-center justify-center h-64">
+                    <h3 class="text-xl font-semibold text-gray-800">No Books Found</h3>
+                    <p class="mt-2 text-gray-600">Looks like there are no books available in this genre.</p>
+                    <p class="mt-2 text-gray-600">Come back later for exciting new reads!</p>
+                    <img src="https://via.placeholder.com/150" alt="No books" class="mt-4 w-24 h-24" />
+                </div>
+                {% endif %}
+                <!-- Pagination if needed -->
+            </main>
+            <aside class="w-full lg:w-1/4 bg-gray-100 p-4 rounded-lg">
+                <h3 class="font-bold text-xl text-gray-800">Filter by Genre</h3>
+                <ul class="space-y-2 mt-4">
+                    {% for genre in genres %}
+                    <li>
+                        <a href="{% url 'home:book_by_genre' genre.uid %}" class="block py-2 px-4 text-gray-500 hover:text-black hover:underline">{{ genre.name }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </aside>
+        </div>
+    </dh-component>
+</div>
+{% endblock %}

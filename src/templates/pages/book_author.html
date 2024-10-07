@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="text-gray-700 body-font overflow-hidden bg-white">
+  <div class="container py-24 mx-auto">
+    <div class="lg:w-4/5 mx-auto flex flex-wrap">
+      <!-- Dynamic Image -->
+      <img id="book-detail-image" alt="{{ book.title }} cover" class="lg:w-1/2 w-full object-cover object-center rounded border border-gray-200" src="{{ book.cover_image.url }}">
+
+      <!-- Book Details -->
+      <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+        <h2 class="text-sm title-font text-gray-500 tracking-widest">
+            AUTHOR:
+            <span>
+                <a href="{% url 'home:filter_by_author' book.primary_author.uid %}">
+                    {{ book.primary_author }}
+                </a>{% if book.other_authors.exists %}, {% endif %}
+                {% for author in book.other_authors %}
+                    <a href="{% url 'home:filter_by_author' author.uid %}">
+                        {{ author }}
+                    </a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </span>
+        </h2>
+        <h1 class="text-gray-900 text-3xl title-font font-medium mb-1">{{ book.title }}</h1>
+
+        <!-- Ratings Section -->
+        <div class="flex mb-4">
+          <span class="flex items-center">
+            {% for i in "12345" %}
+              <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 {% if i <= book.rating %} text-red-500 {% else %} text-gray-300 {% endif %}" viewBox="0 0 24 24">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+              </svg>
+            {% endfor %}
+          </span>
+
+          <!-- Ratings and Reviews Section -->
+
+          <span class="flex ml-3 pl-3 py-2 border-l-2 border-gray-200">
+            <a class="text-gray-500" href="#">
+              42 ratings
+            </a>
+            <a class="ml-2 text-gray-500" href="#">
+              81 reviews
+            </a>
+          </span>
+        </div>
+
+        <!-- Book summary -->
+        <p class="leading-relaxed">{{ book.summary }}</p>
+
+
+        <!-- Genres and Publication Date -->
+        <div class="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
+          <div>
+            <strong>Genres:</strong>
+            <span>
+                {% for genre in book.genres.all %}
+                    <a href="{% url 'home:filter_by_genre' genre.uid %}">
+                        {{ genre.name }}{% if not forloop.last %}, {% endif %}
+                    </a>
+                {% endfor %}
+            </span>
+          </div>
+          <div class="ml-6">
+            <strong>Publication Date:</strong> {{ book.publication_date }}
+          </div>
+        </div>
+
+
+        
+        <!-- Add into list Options -->
+        <div class="flex mt-6">
+          <button class="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">Add to Read</button>
+          <button class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
+            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+              <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+            </svg>
+          </button>
+        </div>
+  
+    </div>
+    <!-- Affiliate Purchase Link -->
+    <div class="container py-24 mx-auto mt-6">
+        <h3 class="text-lg font-semibold">Buy This Book:</h3>
+        <a href="https://example.com/affiliate-link" target="_blank" class="text-red-500 hover:underline">Purchase from Affiliate Shop</a>
+    </div>  
+      </div>
+    
+</div>
+
+</section>
+{% endblock %}
