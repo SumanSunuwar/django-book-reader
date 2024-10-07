@@ -65,7 +65,7 @@ Follow these steps to set up the project locally for development:
 
 To run the Django development server:
 
-1. **Activate the virtual environment** (if not already activated):
+1. **Activate the virtual environment** (install packages):
     - On macOS/Linux:
       ```bash
       source venv/bin/activate
@@ -74,6 +74,10 @@ To run the Django development server:
       ```bash
       venv\Scripts\activate
       ```
+    - install packages
+      ```bash
+    - poetry install
+    ```
 
 2. **Run the development server**:
     ```bash
@@ -88,6 +92,23 @@ To run the Django development server:
     poetry run python .src/manage.py runserver
     ```
 
+3. **Database Migration**:
+   - makemigrations
+    ```bash
+    poetry run python manage.py makemigrations
+    ```
+    - migrate
+    ```bash
+    poetry run python manage.py migrate
+    ```
+    - createsuperuser and access admin site ad localhost/admin
+    ```bash
+    poetry run python manage.py createsuperuser
+    ```
+    - runserver (dev)
+    ```bash
+    poetry run python manage.py runserver
+    ```
 This will start the server locally, and you can visit `http://127.0.0.1:8000` to access the application.
 
 ---
