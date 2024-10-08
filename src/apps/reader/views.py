@@ -60,7 +60,6 @@ def register(request):
 @login_required
 def reading_list_view(request):
     """Displays the user's reading list, excluding archived entries."""
-    print("reading list view", request)
     if request.user:
         archived_status = get_object_or_404(BookStatus, name="archived")
         readings = ReadingList.objects.filter(reader__user=request.user).exclude(status=archived_status)
@@ -68,8 +67,6 @@ def reading_list_view(request):
     else:
         messages.error("You need to logg in and add books to")
         return redirect('home:home')
-    messages.error("You need to logg in and add books to")
-    return redirect('home:home')
 
 
 @login_required

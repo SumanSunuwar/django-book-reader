@@ -150,7 +150,7 @@
 <script>
     var isAuthenticated = {{ request.user.is_authenticated|lower }};
     $(document).ready(function() {
-        {% comment %} e.preventDefault();
+        e.preventDefault();
         
         // Check if the user is authenticated
         if (!isAuthenticated) {
@@ -158,7 +158,7 @@
             window.location.href = '/';
             return;
         }
-         {% endcomment %}
+
         $('.add-to-reading-list').click(function(e) {
             e.preventDefault();
             var bookId = $(this).data('book-id');
