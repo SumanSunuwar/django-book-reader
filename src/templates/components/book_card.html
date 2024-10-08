@@ -49,11 +49,20 @@
                 </div>
                 <p class="pt-1 text-gray-600">By: {{ book.primary_author }}</p>
                 <div class="flex items-center justify-between">
-                    <p class="pt-1 text-gray-600 pr-2">Pages: {{ book.num_pages }}</p>
+                    <p class="pt-1 text-gray-600 pr-2">Pages: {{ book.num_pages }}</p> 
+                    {% if user.is_authenticated %}
                     <button class="add-to-reading-list text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" 
                             data-book-id="{{ book.uid }}">
                         Add to Read
                     </button>
+                {% else %}
+                    <button class="text-white bg-green-700 opacity-50 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:focus:ring-blue-800" 
+                            disabled>
+                        Add to Read
+                    </button>
+                {% endif %}
+                
+                    
                 </div>
             </div>
         </div>

@@ -148,8 +148,17 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    
+    var isAuthenticated = {{ request.user.is_authenticated|lower }};
     $(document).ready(function() {
+        {% comment %} e.preventDefault();
+        
+        // Check if the user is authenticated
+        if (!isAuthenticated) {
+            // If not authenticated, redirect to the home page
+            window.location.href = '/';
+            return;
+        }
+         {% endcomment %}
         $('.add-to-reading-list').click(function(e) {
             e.preventDefault();
             var bookId = $(this).data('book-id');

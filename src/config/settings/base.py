@@ -1,5 +1,8 @@
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+from config.settings import BASE_DIR
+
+
 print('base settings')
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = NotImplemented
@@ -67,9 +70,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/Users/suman/Documents/python_projects/django_projects/appointment_project/db.sqlite3',
+        'NAME': f'{BASE_DIR}/db.sqlite3',
     }
 }
+
+
 
 
 # Password validation
