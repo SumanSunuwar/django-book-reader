@@ -60,14 +60,16 @@ def register(request):
 @login_required
 def reading_list_view(request):
     """Displays the user's reading list, excluding archived entries."""
-    if request.user:
+    if request.user.is_authenticated: 
         archived_status = get_object_or_404(BookStatus, name="archived")
         readings = ReadingList.objects.filter(reader__user=request.user).exclude(status=archived_status)
-        return render(request, 'pages/reading_list.html', {'readings': readings, 'statuses': BookStatus.objects.all().distinct()})
+        return render(request, 'pages/reading_list.html', {
+            'readings': readings,
+            'statuses': BookStatus.objects.all().distinct()
+        })
     else:
-        messages.error("You need to logg in and add books to")
+        messages.error(request, "You need to log in to add books to your reading list.")  # Ensure the request is passed to messages
         return redirect('home:home')
-
 
 @login_required
 def add_to_reading_view(request):

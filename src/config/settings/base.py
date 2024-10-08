@@ -41,7 +41,7 @@ MIDDLEWARE = [
 LOGIN_REDIRECT_URL = 'home:home'
 LOGOUT_REDIRECT_URL = 'home:home'
 
-LOGIN_URL = 'user:login'
+LOGIN_URL = 'reader:login'
 
 ROOT_URLCONF = 'config.urls'
 
