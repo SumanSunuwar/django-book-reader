@@ -26,6 +26,7 @@ pytest-cov = "^5.0.0"
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"
+django_find_project = false
 python_files = ["test_*.py"]
 testpaths = ["src"]
 addopts = "--cov=src --cov-report=term --reuse-db"
